@@ -28,15 +28,24 @@ class UserController extends Controller
         }
         return $token;
     }
+
+    /**
+     * Log the user in and get auth token 
+     */
     public function login(Request $request)
     {
+        $validatedData = $request->validate([
+            'email' => 'required|email|bail',
+            'password' => 'required',
+        ]);
+
         $user = \App\User::where('email', $request->email)->get()->first();
         if ($user && \Hash::check($request->password, $user->password)) // The passwords match...
         {
             $token = self::getToken($request->email, $request->password);
             $user->auth_token = $token;
             $user->save();
-            $response = ['success'=>true, 'data'=>['id'=>$user->id,'auth_token'=>$user->auth_token,'name'=>$user->name, 'email'=>$user->email]];           
+            $response = ['success'=>true, 'data'=>['id'=>$user->id,'auth_token'=>$user->auth_token,'first_name'=>$user->first_name,'last_name'=>$user->last_name,  'email'=>$user->email]];           
         }
         else 
           $response = ['success'=>false, 'data'=>'Record doesnt exists'];
@@ -51,11 +60,21 @@ class UserController extends Controller
      */
     public function register(Request $request)
     { 
+        $validatedData = $request->validate([
+            'email' => 'required|email|bail',
+            'password' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required'
+        ]);
+
         $payload = [
             'password'=>\Hash::make($request->password),
             'email'=>$request->email,
             'name'=>$request->name,
-            'auth_token'=> ''
+            'auth_token'=> '',
+            'first_name'=> $request->first_name,
+            'last_name'=> $request->last_name
+            
         ];
                   
         $user = new \App\User($payload);
@@ -72,7 +91,7 @@ class UserController extends Controller
             
             $user->save();
             
-            $response = ['success'=>true, 'data'=>['name'=>$user->name,'id'=>$user->id,'email'=>$request->email,'auth_token'=>$token]];        
+            $response = ['success'=>true, 'data'=>['first_name'=>$user->first_name,'last_name'=>$user->last_name,'id'=>$user->id,'email'=>$request->email,'auth_token'=>$token]];        
         }
         else
             $response = ['success'=>false, 'data'=>'Couldnt register user'];
