@@ -66,6 +66,11 @@ class JobApplicationController extends Controller
      */
 
      public function showApps(){
-         return JobApplication::find(Auth::user()->id)->paginate(10);
+         $apps = JobApplication::find(Auth::user()->id);
+         if($apps){
+             return $apps->paginate();
+         }
+
+         return ['success'=>False, 'message'=> 'the user does not have any apps at this time'];
      }
 }
