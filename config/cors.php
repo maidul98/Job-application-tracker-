@@ -20,8 +20,7 @@ return [
         'allow_credentials' => false,
 
         'allow_origins' => [
-            '*',
-            // 'https://cryptic-plains-58850.herokuapp.com'
+            'https://cryptic-plains-58850.herokuapp.com'
         ],
 
         'allow_methods' => [
