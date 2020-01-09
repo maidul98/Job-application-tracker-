@@ -30,6 +30,18 @@ class UserController extends Controller
     }
 
     /**
+     * Logout user 
+     */
+     public function logout(){
+        JWTAuth::invalidate(JWTAuth::getToken());
+         return response()->json([
+            'response' => 'success',
+            'message' => 'Token has been invalidated',
+        ]);
+     }
+
+
+    /**
      * Log the user in and get auth token 
      */
     public function login(Request $request)

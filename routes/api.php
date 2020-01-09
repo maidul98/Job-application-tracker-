@@ -26,16 +26,20 @@ Route::group(['middleware' => ['jwt.auth']], function () {
         $response = ['success'=>true, 'data'=>$users];
         return response()->json($response, 201);
     });
+
+    /**
+     * Logout
+     */
+    Route::post('user/logout', 'UserController@logout');
 });
 
 
-// Route::group, function () {
-//     // The registration and login requests doesn't come with tokens 
-//     // as users at that point have not been authenticated yet
-//     // Therefore the jwtMiddleware will be exclusive of them
-//     Route::post('user/login', 'UserController@login');
-//     Route::post('user/register', 'UserController@register');
-// });
+Route::group(['middleware' => ['jwt.auth']], function(){
+    Route::post('job-applicaion/create', 'JobApplicationController@store');
+    Route::post('job-applicaion/update', 'JobApplicationController@update');
+    Route::post('job-applicaion/delete', 'JobApplicationController@destroy');
+    Route::get('job-applicaion/show-all', 'JobApplicationController@showApps');
+});
 
 Route::post('user/login', 'UserController@login');
 Route::post('user/register', 'UserController@register');

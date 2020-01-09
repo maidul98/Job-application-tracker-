@@ -4,26 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class JobApplication extends Controller
+use App\Stages;
+
+class JobApplicationStagesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        return Stages::create(['job_application_id' => 1, 'stage_name'=> 1, 'passed'=> 1]);
     }
 
     /**
