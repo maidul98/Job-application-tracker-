@@ -66,7 +66,7 @@ class JobApplicationController extends Controller
      */
 
      public function showApps(){
-         $apps = JobApplication::find(Auth::user()->id);
+         $apps = JobApplication::where('user_id', Auth::user()->id);
          if($apps){
              return $apps->paginate();
          }
